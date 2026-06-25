@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#b9dcff" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="icon" href="/vibe-game-playtest/favicon.svg" />
+    <title>Vibe Game</title>
+    <script type="module" crossorigin src="/vibe-game-playtest/assets/index-BkIYspyi.js"></script>
+    <link rel="stylesheet" crossorigin href="/vibe-game-playtest/assets/index-oHunx6D2.css">
+  </head>
+  <body>
+    <main id="app" aria-label="Vibe Game">
+      <canvas id="game-canvas" tabindex="0"></canvas>
+
+      <section id="mobile-controls" class="mobile-controls" aria-label="Мобильное управление">
+        <div id="mobile-move-zone" class="mobile-touch-zone mobile-move-zone" aria-hidden="true"></div>
+        <div id="mobile-look-zone" class="mobile-touch-zone mobile-look-zone" aria-hidden="true"></div>
+        <button id="mobile-use-button" class="mobile-use-button" type="button" aria-label="Взаимодействовать"></button>
+        <button id="mobile-shield-button" class="mobile-shield-button" type="button" aria-label="Щит"></button>
+        <button id="mobile-fire-button" class="mobile-fire-button" type="button" aria-label="Стрелять"></button>
+      </section>
+
+      <section class="hud hud-top" aria-label="Статус рейда">
+        <div class="hud-group">
+          <div class="status-chip">
+            <span class="chip-label">HP</span>
+            <strong id="hp-value">100</strong>
+          </div>
+          <div class="status-chip">
+            <span class="chip-label">Энергия</span>
+            <strong id="energy-value">1</strong>
+          </div>
+          <div class="status-chip">
+            <span class="chip-label">Боезапас</span>
+            <strong id="ammo-value">30/30</strong>
+          </div>
+          <div class="status-chip">
+            <span class="chip-label">Груз</span>
+            <strong id="cargo-value">0/1</strong>
+          </div>
+          <div class="status-chip">
+            <span class="chip-label">Угроза</span>
+            <strong id="threat-value">1</strong>
+          </div>
+          <div class="status-chip" id="alarm-chip">
+            <span class="chip-label">Тревога</span>
+            <strong id="alarm-value">тихо</strong>
+          </div>
+        </div>
+        <div class="objective-panel">
+          <span id="objective-label">Забрать данные</span>
+          <div class="objective-meter" aria-hidden="true">
+            <span id="objective-meter-fill"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="hud hud-bottom" aria-label="Информация об эвакуации">
+        <div class="extract-panel">
+          <span class="chip-label">Эвакуация</span>
+          <strong id="extract-value">закрыта</strong>
+        </div>
+        <div class="bottom-actions">
+          <button id="settings-button" type="button">Настройки</button>
+          <button id="restart-button" type="button" hidden>Новый рейд</button>
+        </div>
+      </section>
+
+      <section id="threat-radar" class="threat-radar" aria-label="Направление угрозы" hidden>
+        <span id="threat-radar-arrow" aria-hidden="true"></span>
+        <strong id="threat-radar-label">Контакт</strong>
+      </section>
+
+      <section id="interaction-prompt" class="interaction-prompt" aria-live="polite" hidden>
+        <strong id="interaction-prompt-title">Заглушить связь</strong>
+        <span id="interaction-prompt-copy">E</span>
+      </section>
+
+      <section id="settings-panel" class="settings-panel" aria-label="Настройки" hidden>
+        <div class="settings-header">
+          <h2>Настройки</h2>
+          <button id="settings-close-button" type="button" aria-label="Закрыть">×</button>
+        </div>
+        <label class="range-control" for="camera-sensitivity-input">
+          <span>
+            <strong>Чувствительность камеры</strong>
+            <small id="camera-sensitivity-value">45%</small>
+          </span>
+          <input id="camera-sensitivity-input" type="range" min="0.15" max="1.2" step="0.05" value="0.45" />
+        </label>
+        <button id="fullscreen-button" class="settings-action-button" type="button">Во весь экран</button>
+      </section>
+
+      <section id="ready-panel" class="ready-panel" aria-label="Готовность">
+        <button id="ready-button" type="button">К бою готов</button>
+      </section>
+
+      <section id="result-panel" class="result-panel" aria-live="polite" hidden>
+        <div class="result-content">
+          <span id="result-kicker">Рейд завершен</span>
+          <h1 id="result-title">Эвакуация</h1>
+          <p id="result-copy">Данные вынесены с аванпоста.</p>
+          <button id="result-restart-button" type="button">Новый рейд</button>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
