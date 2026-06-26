@@ -9,8 +9,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="icon" href="/vibe-game-playtest/favicon.svg" />
     <title>Vibe Game</title>
-    <script type="module" crossorigin src="/vibe-game-playtest/assets/index-DxwlN-PU.js"></script>
-    <link rel="stylesheet" crossorigin href="/vibe-game-playtest/assets/index-oHunx6D2.css">
+    <script type="module" crossorigin src="/vibe-game-playtest/assets/index-C-QWNMPT.js"></script>
+    <link rel="stylesheet" crossorigin href="/vibe-game-playtest/assets/index-CL5jw2Yn.css">
   </head>
   <body>
     <main id="app" aria-label="Vibe Game">
@@ -22,57 +22,68 @@
         <button id="mobile-use-button" class="mobile-use-button" type="button" aria-label="Взаимодействовать"></button>
         <button id="mobile-shield-button" class="mobile-shield-button" type="button" aria-label="Щит"></button>
         <button id="mobile-fire-button" class="mobile-fire-button" type="button" aria-label="Стрелять"></button>
+        <button id="mobile-reload-button" class="mobile-reload-button" type="button" aria-label="Перезарядить"></button>
       </section>
 
       <section class="hud hud-top" aria-label="Статус рейда">
         <div class="hud-group">
-          <div class="status-chip">
-            <span class="chip-label">HP</span>
-            <strong id="hp-value">100</strong>
+          <div id="health-chip" class="status-chip game-counter-chip">
+            <span class="chip-label game-counter-label">
+              <span class="chip-label-text">Жизнь</span>
+              <svg class="game-counter-icon life-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M12 20.4 4.9 13.5C1.15 9.85 3.8 3.7 8.9 4.25c1.42.15 2.52.92 3.1 1.98.58-1.06 1.68-1.83 3.1-1.98 5.1-.55 7.75 5.6 4 9.25L12 20.4Z" />
+              </svg>
+              <span class="game-counter-extra"><span id="shield-pips" class="shield-pips" aria-label="Щит" hidden></span></span>
+            </span>
+            <strong id="hp-value" class="game-counter-value health-pips" aria-label="Жизнь игрока"></strong>
           </div>
-          <div class="status-chip">
-            <span class="chip-label">Энергия</span>
-            <strong id="energy-value">1</strong>
+          <div class="status-chip game-counter-chip">
+            <span class="chip-label game-counter-label"><span class="chip-label-text">Сабай</span><span class="game-counter-icon energy-icon" aria-hidden="true">⚡</span><span class="game-counter-extra" aria-hidden="true"></span></span>
+            <strong id="energy-value" class="game-counter-value">1</strong>
           </div>
-          <div class="status-chip">
-            <span class="chip-label">Боезапас</span>
-            <strong id="ammo-value">30/30</strong>
+          <div id="ammo-chip" class="status-chip game-counter-chip">
+            <span class="chip-label game-counter-label"><span class="chip-label-text">Патроны</span><span class="game-counter-icon ammo-icon" aria-hidden="true"></span><span class="game-counter-extra" aria-hidden="true"></span></span>
+            <strong id="ammo-value" class="game-counter-value">30/30</strong>
           </div>
-          <div class="status-chip">
-            <span class="chip-label">Груз</span>
-            <strong id="cargo-value">0/1</strong>
+          <div class="status-chip game-counter-chip threat-status-chip">
+            <span class="chip-label game-counter-label">
+              <span class="chip-label-text">Бармалеи</span>
+              <svg class="game-counter-icon threat-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle class="threat-icon-face" cx="12" cy="12" r="9" />
+                <path class="threat-icon-line" d="M7.25 8.25 10 9.45" />
+                <path class="threat-icon-line" d="M16.75 8.25 14 9.45" />
+                <circle class="threat-icon-mark" cx="9.1" cy="11.25" r="1.25" />
+                <circle class="threat-icon-mark" cx="14.9" cy="11.25" r="1.25" />
+                <path class="threat-icon-line" d="M8.5 17c1.8-1.55 5.2-1.55 7 0" />
+              </svg>
+              <span class="game-counter-extra" aria-hidden="true"></span>
+            </span>
+            <strong id="threat-value" class="game-counter-value">1</strong>
           </div>
-          <div class="status-chip">
-            <span class="chip-label">Угроза</span>
-            <strong id="threat-value">1</strong>
-          </div>
-          <div class="status-chip" id="alarm-chip">
-            <span class="chip-label">Тревога</span>
-            <strong id="alarm-value">тихо</strong>
-          </div>
+          <span id="alarm-value" hidden>тихо</span>
         </div>
-        <div class="objective-panel">
-          <span id="objective-label">Забрать данные</span>
-          <div class="objective-meter" aria-hidden="true">
-            <span id="objective-meter-fill"></span>
+        <div class="objective-cluster">
+          <div class="status-chip game-counter-chip objective-cargo-chip">
+            <span class="chip-label game-counter-label">
+              <span class="chip-label-text">Том ям</span>
+              <svg class="game-counter-icon soup-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path class="soup-icon-steam" d="M8 5.2c-1.1 1.1 1.1 1.7 0 2.8" />
+                <path class="soup-icon-steam" d="M12 4.4c-1.2 1.2 1.2 1.9 0 3.1" />
+                <path class="soup-icon-steam" d="M16 5.2c-1.1 1.1 1.1 1.7 0 2.8" />
+                <ellipse class="soup-icon-surface" cx="12" cy="12" rx="7.2" ry="2.7" />
+                <path class="soup-icon-bowl" d="M5.1 12.2h13.8c-.35 4.05-2.75 6.3-6.9 6.3s-6.55-2.25-6.9-6.3Z" />
+                <path class="soup-icon-rim" d="M5.1 12.2c1.35 1.75 12.45 1.75 13.8 0" />
+              </svg>
+              <span class="game-counter-extra" aria-hidden="true"></span>
+            </span>
+            <strong id="cargo-value" class="game-counter-value">0/1</strong>
           </div>
+          <button id="settings-button" type="button" aria-label="Настройки" title="Настройки">
+            <svg class="settings-gear-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path class="settings-gear-body" fill-rule="evenodd" clip-rule="evenodd" d="M19.43 12.98c.04-.32.07-.65.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.37-.31-.6-.22l-2.49 1a7.23 7.23 0 0 0-1.69-.98l-.38-2.65A.5.5 0 0 0 14 2h-4a.5.5 0 0 0-.5.42l-.38 2.65c-.61.25-1.18.58-1.69.98l-2.49-1a.51.51 0 0 0-.6.22l-2 3.46a.5.5 0 0 0 .12.64l2.11 1.65a7.93 7.93 0 0 0 0 1.96l-2.11 1.65a.5.5 0 0 0-.12.64l2 3.46c.12.22.37.31.6.22l2.49-1c.51.4 1.08.73 1.69.98l.38 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.38-2.65a7.23 7.23 0 0 0 1.69-.98l2.49 1c.23.09.48 0 .6-.22l2-3.46a.5.5 0 0 0-.12-.64l-2.11-1.65ZM12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" />
+            </svg>
+          </button>
         </div>
-      </section>
-
-      <section class="hud hud-bottom" aria-label="Информация об эвакуации">
-        <div class="extract-panel">
-          <span class="chip-label">Эвакуация</span>
-          <strong id="extract-value">закрыта</strong>
-        </div>
-        <div class="bottom-actions">
-          <button id="settings-button" type="button">Настройки</button>
-          <button id="restart-button" type="button" hidden>Новый рейд</button>
-        </div>
-      </section>
-
-      <section id="threat-radar" class="threat-radar" aria-label="Направление угрозы" hidden>
-        <span id="threat-radar-arrow" aria-hidden="true"></span>
-        <strong id="threat-radar-label">Контакт</strong>
       </section>
 
       <section id="interaction-prompt" class="interaction-prompt" aria-live="polite" hidden>
@@ -80,31 +91,50 @@
         <span id="interaction-prompt-copy">E</span>
       </section>
 
-      <section id="settings-panel" class="settings-panel" aria-label="Настройки" hidden>
+      <section id="orientation-panel" class="orientation-panel" aria-live="polite" hidden>
+        <div class="orientation-content">
+          <span class="orientation-icon" aria-hidden="true"></span>
+          <strong>Поверните ваше устройство</strong>
+          <span>Познать сабай можно только в горизонтальном положении</span>
+        </div>
+      </section>
+
+      <section id="settings-panel" class="settings-panel" aria-label="Настройки" tabindex="-1" hidden>
         <div class="settings-header">
           <h2>Настройки</h2>
           <button id="settings-close-button" type="button" aria-label="Закрыть">×</button>
         </div>
+        <div class="settings-objective">
+          <strong class="settings-objective-title">Текущая задача</strong>
+          <div class="objective-panel settings-objective-panel">
+            <span id="objective-label">Забрать 4 том яма</span>
+            <div class="objective-meter" aria-hidden="true">
+              <span id="objective-meter-fill"></span>
+            </div>
+          </div>
+        </div>
         <label class="range-control" for="camera-sensitivity-input">
           <span>
             <strong>Чувствительность камеры</strong>
-            <small id="camera-sensitivity-value">45%</small>
+            <small id="camera-sensitivity-value">40%</small>
           </span>
-          <input id="camera-sensitivity-input" type="range" min="0.15" max="1.2" step="0.05" value="0.45" />
+          <input id="camera-sensitivity-input" type="range" min="0.15" max="1" step="0.05" value="0.4" />
         </label>
         <button id="fullscreen-button" class="settings-action-button" type="button">Во весь экран</button>
+        <button id="settings-restart-button" class="settings-action-button settings-action-button-danger" type="button">Рестарт</button>
       </section>
 
       <section id="ready-panel" class="ready-panel" aria-label="Готовность">
-        <button id="ready-button" type="button">К бою готов</button>
+        <button id="ready-button" type="button">Савадикап!</button>
       </section>
 
       <section id="result-panel" class="result-panel" aria-live="polite" hidden>
         <div class="result-content">
-          <span id="result-kicker">Рейд завершен</span>
-          <h1 id="result-title">Эвакуация</h1>
-          <p id="result-copy">Данные вынесены с аванпоста.</p>
-          <button id="result-restart-button" type="button">Новый рейд</button>
+          <button id="result-close-button" class="result-close-button" type="button" aria-label="Закрыть">×</button>
+          <span id="result-kicker">наследие спасено</span>
+          <h1 id="result-title">Вы не потеряли лицо</h1>
+          <p id="result-copy">Хотите ещё разок?</p>
+          <button id="result-restart-button" type="button">Познать сабай снова</button>
         </div>
       </section>
     </main>
