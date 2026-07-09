@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-07-09T17:43:29.903Z",
+  "rawDir": "assets/raw",
+  "outputDir": "public/assets/optimized",
+  "textureSize": 1024,
+  "optimizer": "gltf-transform optimize",
+  "policy": "conservative-meshopt-webp-preserve-nodes",
+  "assets": []
+}
