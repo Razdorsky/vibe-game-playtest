@@ -9,8 +9,38 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="icon" href="/vibe-game-playtest/favicon.svg" />
     <title>Vibe Game</title>
-    <script type="module" crossorigin src="/vibe-game-playtest/assets/index-BCz9e7En.js"></script>
-    <link rel="stylesheet" crossorigin href="/vibe-game-playtest/assets/index-CtOapOPH.css">
+    <script>
+      globalThis.__vibeGameRuntimeErrors = [];
+      document.documentElement.dataset.runtimeErrorCount = "0";
+      const recordRuntimeError = (entry) => {
+        globalThis.__vibeGameRuntimeErrors.push(entry);
+        document.documentElement.dataset.runtimeErrorCount = String(globalThis.__vibeGameRuntimeErrors.length);
+        document.documentElement.dataset.runtimeLastError = JSON.stringify(entry);
+      };
+      addEventListener("error", (event) => {
+        recordRuntimeError({
+          type: "error",
+          message: event.message,
+          source: event.filename,
+          line: event.lineno,
+          column: event.colno,
+          stack: event.error?.stack ?? null,
+        });
+      });
+      addEventListener("unhandledrejection", (event) => {
+        recordRuntimeError({
+          type: "unhandledrejection",
+          message: event.reason?.message ?? String(event.reason),
+          stack: event.reason?.stack ?? null,
+        });
+      });
+    </script>
+    <script type="module" crossorigin src="/vibe-game-playtest/assets/index-Bgcn2DEG.js"></script>
+    <link rel="modulepreload" crossorigin href="/vibe-game-playtest/assets/vendor-three-fKEvudzP.js">
+    <link rel="modulepreload" crossorigin href="/vibe-game-playtest/assets/vendor-physics-DUdR6b3w.js">
+    <link rel="modulepreload" crossorigin href="/vibe-game-playtest/assets/vendor-postprocessing-Bb3IkjMo.js">
+    <link rel="modulepreload" crossorigin href="/vibe-game-playtest/assets/vendor-asset-runtime-BiS9AX_d.js">
+    <link rel="stylesheet" crossorigin href="/vibe-game-playtest/assets/index-c3pim0dP.css">
   </head>
   <body>
     <main id="app" aria-label="Vibe Game">
@@ -23,6 +53,7 @@
         <button id="mobile-shield-button" class="mobile-shield-button" type="button" aria-label="Щит"></button>
         <button id="mobile-fire-button" class="mobile-fire-button" type="button" aria-label="Стрелять"></button>
         <button id="mobile-reload-button" class="mobile-reload-button" type="button" aria-label="Перезарядить"></button>
+        <button id="mobile-heal-button" class="mobile-heal-button" type="button" aria-label="Лечиться"></button>
       </section>
 
       <section class="hud hud-top" aria-label="Статус рейда">
@@ -43,7 +74,7 @@
           </div>
           <div id="ammo-chip" class="status-chip game-counter-chip">
             <span class="chip-label game-counter-label"><span class="chip-label-text">Патроны</span><span class="game-counter-icon ammo-icon" aria-hidden="true"></span><span class="game-counter-extra" aria-hidden="true"></span></span>
-            <strong id="ammo-value" class="game-counter-value">30/30</strong>
+            <strong id="ammo-value" class="game-counter-value">21/20</strong>
           </div>
           <div class="status-chip game-counter-chip threat-status-chip">
             <span class="chip-label game-counter-label">
@@ -60,7 +91,6 @@
             </span>
             <strong id="threat-value" class="game-counter-value">1</strong>
           </div>
-          <span id="alarm-value" hidden>тихо</span>
         </div>
         <div class="objective-cluster">
           <div class="status-chip game-counter-chip objective-cargo-chip">
@@ -78,7 +108,7 @@
             </span>
             <strong id="cargo-value" class="game-counter-value">0/1</strong>
           </div>
-          <button id="settings-button" type="button" aria-label="Настройки" title="Настройки">
+          <button id="settings-button" type="button" aria-label="Пауза" title="Пауза">
             <svg class="settings-gear-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path class="settings-gear-body" fill-rule="evenodd" clip-rule="evenodd" d="M19.43 12.98c.04-.32.07-.65.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.37-.31-.6-.22l-2.49 1a7.23 7.23 0 0 0-1.69-.98l-.38-2.65A.5.5 0 0 0 14 2h-4a.5.5 0 0 0-.5.42l-.38 2.65c-.61.25-1.18.58-1.69.98l-2.49-1a.51.51 0 0 0-.6.22l-2 3.46a.5.5 0 0 0 .12.64l2.11 1.65a7.93 7.93 0 0 0 0 1.96l-2.11 1.65a.5.5 0 0 0-.12.64l2 3.46c.12.22.37.31.6.22l2.49-1c.51.4 1.08.73 1.69.98l.38 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.38-2.65a7.23 7.23 0 0 0 1.69-.98l2.49 1c.23.09.48 0 .6-.22l2-3.46a.5.5 0 0 0-.12-.64l-2.11-1.65ZM12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" />
             </svg>
@@ -99,10 +129,10 @@
         </div>
       </section>
 
-      <section id="settings-panel" class="settings-panel" aria-label="Настройки" tabindex="-1" hidden>
+      <section id="pause-panel" class="pause-panel" aria-label="Пауза" tabindex="-1" hidden>
         <div class="settings-header">
-          <h2>Настройки</h2>
-          <button id="settings-close-button" type="button" aria-label="Закрыть">×</button>
+          <h2>Пауза</h2>
+          <button id="pause-close-button" type="button" aria-label="Закрыть">×</button>
         </div>
         <div class="settings-objective">
           <strong class="settings-objective-title">Текущая задача</strong>
@@ -113,21 +143,46 @@
             </div>
           </div>
         </div>
-        <label class="range-control" for="camera-sensitivity-input">
-          <span>
-            <strong>Чувствительность камеры</strong>
-            <small id="camera-sensitivity-value">40%</small>
-          </span>
-          <input id="camera-sensitivity-input" type="range" min="0.15" max="1" step="0.05" value="0.4" />
-        </label>
+        <button id="pause-settings-button" class="settings-action-button" type="button">Настройки</button>
         <button id="fullscreen-button" class="settings-action-button" type="button">Во весь экран</button>
-        <button id="settings-controls-button" class="settings-action-button desktop-controls-button" type="button">Посмотреть управление</button>
-        <button id="settings-restart-button" class="settings-action-button settings-action-button-danger" type="button">Рестарт</button>
+        <button id="pause-controls-button" class="settings-action-button desktop-controls-button" type="button">Посмотреть управление</button>
+        <button id="pause-restart-button" class="settings-action-button settings-action-button-danger" type="button">Рестарт</button>
+      </section>
+
+      <section id="settings-panel" class="settings-panel" aria-label="Настройки" tabindex="-1" hidden>
+        <div class="settings-dialog">
+          <div class="settings-header">
+            <h2>Настройки</h2>
+            <button id="settings-close-button" type="button" aria-label="Закрыть">×</button>
+          </div>
+          <div class="settings-sections">
+            <section class="settings-section" aria-labelledby="camera-sensitivity-heading">
+              <div class="settings-section-header">
+                <h3 id="camera-sensitivity-heading">Чувствительность камеры</h3>
+                <output id="camera-sensitivity-value" for="camera-sensitivity-input">40%</output>
+              </div>
+              <label class="range-control" for="camera-sensitivity-input">
+                <input id="camera-sensitivity-input" type="range" min="0.15" max="1" step="0.05" value="0.4" aria-label="Чувствительность камеры" />
+              </label>
+            </section>
+            <section class="settings-section" aria-labelledby="graphics-quality-heading">
+              <div class="settings-section-header">
+                <h3 id="graphics-quality-heading">Уровень графика</h3>
+              </div>
+              <div class="graphics-preset-control" role="group" aria-labelledby="graphics-quality-heading">
+                <button class="graphics-preset-button" type="button" data-graphics-profile="low" aria-pressed="false">Низкий</button>
+                <button class="graphics-preset-button" type="button" data-graphics-profile="balanced" aria-pressed="false">Средний</button>
+                <button class="graphics-preset-button" type="button" data-graphics-profile="high" aria-pressed="false">Высокий</button>
+              </div>
+            </section>
+          </div>
+        </div>
       </section>
 
       <section id="ready-panel" class="ready-panel" aria-label="Готовность">
         <div class="ready-actions">
           <button id="ready-button" type="button">Савадикап!</button>
+          <button id="ready-fullscreen-button" class="desktop-controls-button ready-controls-button" type="button">Во весь экран</button>
           <button id="ready-controls-button" class="desktop-controls-button ready-controls-button" type="button">Посмотреть управление</button>
         </div>
       </section>
@@ -142,40 +197,41 @@
             <section class="controls-section" aria-label="Движение">
               <h3>Движение</h3>
               <dl class="control-list">
-                <div><dt><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></dt><dd>движение</dd></div>
-                <div><dt><kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd></dt><dd>движение</dd></div>
-                <div><dt><kbd>Shift</kbd></dt><dd>спринт</dd></div>
-                <div><dt><kbd>C</kbd></dt><dd>присесть</dd></div>
-                <div><dt><kbd>Space</kbd></dt><dd>дэш</dd></div>
+                <div><dt><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></dt><dd>Движение</dd></div>
+                <div><dt><kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd></dt><dd>Движение</dd></div>
+                <div><dt><kbd>Shift</kbd></dt><dd>Спринт</dd></div>
+                <div><dt><kbd>C</kbd></dt><dd>Присесть</dd></div>
+                <div><dt><kbd>Space</kbd></dt><dd>Дэш</dd></div>
               </dl>
             </section>
             <section class="controls-section" aria-label="Бой">
               <h3>Бой</h3>
               <dl class="control-list">
-                <div><dt><kbd>ЛКМ</kbd></dt><dd>стрельба</dd></div>
-                <div><dt><kbd>R</kbd></dt><dd>перезарядка</dd></div>
-                <div><dt><kbd>F</kbd></dt><dd>мили-атака</dd></div>
-                <div><dt><kbd>E</kbd></dt><dd>пинок</dd></div>
-                <div><dt><kbd>Q</kbd></dt><dd>щит</dd></div>
-                <div><dt><kbd>X</kbd></dt><dd>буллит-тайм</dd></div>
+                <div><dt><kbd>ЛКМ</kbd></dt><dd>Стрельба</dd></div>
+                <div><dt><kbd>R</kbd></dt><dd>Перезарядка</dd></div>
+                <div><dt><kbd>F</kbd></dt><dd>Мили-атака</dd></div>
+                <div><dt><kbd>E</kbd></dt><dd>Пинок</dd></div>
+                <div><dt><kbd>Q</kbd></dt><dd>Щит</dd></div>
+                <div><dt><kbd>X</kbd></dt><dd>Буллит-тайм</dd></div>
+                <div><dt><kbd>V</kbd></dt><dd>Лечение</dd></div>
               </dl>
             </section>
             <section class="controls-section" aria-label="Камера и взаимодействие">
               <h3>Камера и мир</h3>
               <dl class="control-list">
-                <div><dt><kbd>трекпад</kbd></dt><dd>поворот камеры</dd></div>
-                <div><dt><kbd>мышь</kbd></dt><dd>поворот камеры</dd></div>
-                <div><dt><kbd>T</kbd></dt><dd>взаимодействие</dd></div>
-                <div><dt><kbd>Escape</kbd></dt><dd>настройки</dd></div>
+                <div><dt><kbd>Трекпад</kbd></dt><dd>Поворот камеры</dd></div>
+                <div><dt><kbd>Мышь</kbd></dt><dd>Поворот камеры</dd></div>
+                <div><dt><kbd>T</kbd></dt><dd>Взаимодействие</dd></div>
+                <div><dt><kbd>Escape</kbd></dt><dd>Пауза</dd></div>
               </dl>
             </section>
             <section class="controls-section" aria-label="Служебные команды">
               <h3>Служебное</h3>
               <dl class="control-list">
-                <div><dt><kbd>G</kbd></dt><dd>godmode</dd></div>
-                <div><dt><kbd>I</kbd></dt><dd>невидимость</dd></div>
-                <div><dt><kbd>H</kbd></dt><dd>победа</dd></div>
-                <div><dt><kbd>F2</kbd></dt><dd>dev-редактор карты</dd></div>
+                <div><dt><kbd>G</kbd></dt><dd>Godmode</dd></div>
+                <div><dt><kbd>I</kbd></dt><dd>Невидимость</dd></div>
+                <div><dt><kbd>H</kbd></dt><dd>Победа</dd></div>
+                <div><dt><kbd>F2</kbd></dt><dd>Dev-редактор карты</dd></div>
               </dl>
             </section>
           </div>
