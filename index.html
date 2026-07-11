@@ -3,12 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#b9dcff" />
+    <meta name="theme-color" content="#000000" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="icon" href="/vibe-game-playtest/favicon.svg" />
+    <link rel="preload" href="/vibe-game-playtest/assets/audio/launch/0711.wav" as="audio" type="audio/wav" />
     <title>Vibe Game</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: #000;
+      }
+    </style>
     <script>
       globalThis.__vibeGameRuntimeErrors = [];
       document.documentElement.dataset.runtimeErrorCount = "0";
@@ -35,15 +43,52 @@
         });
       });
     </script>
-    <script type="module" crossorigin src="/vibe-game-playtest/assets/index-DUXX7PET.js"></script>
-    <link rel="modulepreload" crossorigin href="/vibe-game-playtest/assets/vendor-three-fKEvudzP.js">
-    <link rel="modulepreload" crossorigin href="/vibe-game-playtest/assets/vendor-physics-DUdR6b3w.js">
-    <link rel="modulepreload" crossorigin href="/vibe-game-playtest/assets/vendor-postprocessing-Bb3IkjMo.js">
-    <link rel="modulepreload" crossorigin href="/vibe-game-playtest/assets/vendor-asset-runtime-BiS9AX_d.js">
-    <link rel="stylesheet" crossorigin href="/vibe-game-playtest/assets/index-c3pim0dP.css">
+    <script type="module" crossorigin src="/vibe-game-playtest/assets/index-BmCGp2jE.js"></script>
+    <link rel="stylesheet" crossorigin href="/vibe-game-playtest/assets/index-BVVOph1a.css">
   </head>
-  <body>
-    <main id="app" aria-label="Vibe Game">
+  <body class="launch-screen-active">
+    <section id="launch-screen" class="launch-screen" aria-label="Запуск игры" aria-busy="true">
+      <button id="launch-activation" class="launch-activation" type="button">
+        Просто сделайте клик...
+      </button>
+
+      <div class="launch-brand">
+        <img
+          class="launch-logo"
+          src="/vibe-game-playtest/assets/ui/farsabay.jpg"
+          width="1655"
+          height="300"
+          alt="Farsabay"
+          decoding="async"
+          fetchpriority="high"
+        />
+        <div id="launch-loader" class="launch-loader">
+          <div
+            id="launch-progress"
+            class="launch-progress"
+            role="progressbar"
+            aria-label="Загрузка"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          >
+            <span id="launch-progress-fill" class="launch-progress-fill"></span>
+          </div>
+        </div>
+      </div>
+
+      <div id="launch-menu" class="launch-menu" aria-label="Выбор режима" hidden>
+        <button id="launch-single-player-button" class="launch-mode-button" type="button">
+          Одиночная игра
+        </button>
+        <button class="launch-mode-button launch-mode-button-disabled" type="button" disabled>
+          Совместная игра (скоро)
+        </button>
+        <p id="launch-error" class="launch-error" role="alert" hidden>Не удалось запустить игру</p>
+      </div>
+    </section>
+
+    <main id="app" aria-label="Vibe Game" aria-hidden="true" inert>
       <canvas id="game-canvas" tabindex="0"></canvas>
 
       <section id="mobile-controls" class="mobile-controls" aria-label="Мобильное управление">
@@ -199,7 +244,7 @@
               <dl class="control-list">
                 <div><dt><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></dt><dd>Движение</dd></div>
                 <div><dt><kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd></dt><dd>Движение</dd></div>
-                <div><dt><kbd>Shift</kbd></dt><dd>Спринт</dd></div>
+                <div><dt><kbd>Shift</kbd></dt><dd>Переключить ходьбу/спринт</dd></div>
                 <div><dt><kbd>C</kbd></dt><dd>Присесть</dd></div>
                 <div><dt><kbd>Space</kbd></dt><dd>Дэш</dd></div>
               </dl>
