@@ -15,7 +15,7 @@ All files in this folder are runtime subsets of permissive OpenGameArt assets.
   - License: CC0.
   - Runtime use: explosion, glass, body hit/fall, metal casing/magazine, and mechanical weapon layers.
 - `helicopter/helicopter.mp3`
-  - Source: OpenGameArt, "Helicopter Sounds" by aquinn.
-  - URL: https://opengameart.org/content/helicopter-sounds
-  - License: CC0.
-  - Runtime use: helicopter rotor loop when decoded; procedural rotor remains only as fallback.
+  - Source: project-owner supplied `0713.MP3` on 2026-07-13.
+  - License: project-provided asset; external provenance was not specified.
+  - Raw path: `assets/raw/audio/user/0713.MP3`.
+  - Runtime use: mandatory recorded helicopter rotor loop, repeated across its full 2.534-second duration.
