@@ -1,8 +1,8 @@
 # Runtime PBR Material Sources
 
-All material sets in this folder are sourced from ambientCG and licensed CC0.
-The retained raw ZIP archives and per-asset source URLs are documented in
-`assets/raw/SOURCES.md`.
+Most material sets in this folder are sourced from ambientCG and licensed CC0.
+The project-generated sandbag albedo is documented below. Retained raw sources
+and per-asset source notes are documented in `assets/raw/SOURCES.md`.
 
 Runtime policy:
 
@@ -27,3 +27,8 @@ Leaf001 is cropped identically across albedo, normal, and roughness, then
 UV-fitted across the procedural palm-frond mesh. Its photographed veins and
 surface response follow the blade without sampling the source image's black
 cutout background.
+
+`SandbagBurlap_1K_Color.jpg` is a project-generated seamless burlap albedo made
+with OpenAI ImageGen from the user's sandbag material reference. The retained
+raw generation is `assets/raw/generated/sandbag-burlap-source.png`; the runtime
+material combines it with the CC0 Fabric042 normal and roughness maps.
