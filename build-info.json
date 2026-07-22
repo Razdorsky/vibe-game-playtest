@@ -1,4 +1,12 @@
 {
   "sourceCommit": "1bae00d",
-  "pagesBase": "/vibe-game-playtest/"
+  "pagesBase": "/vibe-game-playtest/",
+  "canonicalMap": {
+    "savedAt": "2026-07-21T21:51:48.834Z",
+    "enemies": 28,
+    "interactables": 6,
+    "glassCubes": 7,
+    "grass": 19,
+    "staticBodies": 91
+  }
 }
