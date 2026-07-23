@@ -662,6 +662,9 @@ ${v.fragmentShader}`,v.fragmentShader=v.fragmentShader.replace(w,`${w}
   uniform float hbaoIntensity;
   uniform float hbaoBias;
 
+  const float HBAO_FULL_DISTANCE = 45.0;
+  const float HBAO_MAX_DISTANCE = 80.0;
+
   vec3 hbaoViewPosition(const in vec2 uv, const in float depth) {
     vec4 clipPosition = vec4(uv * 2.0 - 1.0, depth * 2.0 - 1.0, 1.0);
     vec4 viewPosition = hbaoProjectionMatrixInverse * clipPosition;
@@ -680,13 +683,18 @@ ${v.fragmentShader}`,v.fragmentShader=v.fragmentShader.replace(w,`${w}
     }
 
     vec3 origin = hbaoViewPosition(uv, depth);
+    float viewDepth = max(-origin.z, 0.0);
     vec3 normal = normalize(cross(dFdx(origin), dFdy(origin)));
     if (normal.z < 0.0) {
       normal = -normal;
     }
+    if (viewDepth >= HBAO_MAX_DISTANCE) {
+      outputColor = inputColor;
+      return;
+    }
 
     float pixelRadius = clamp(
-      hbaoRadius * hbaoProjectionScale * resolution.y / max(-origin.z, 0.1),
+      hbaoRadius * hbaoProjectionScale * resolution.y / max(viewDepth, 0.1),
       1.5,
       18.0
     );
@@ -732,7 +740,11 @@ ${v.fragmentShader}`,v.fragmentShader=v.fragmentShader.replace(w,`${w}
       occlusion += horizon;
     }
 
-    float distanceFade = 1.0 - smoothstep(72.0, 150.0, -origin.z);
+    float distanceFade = 1.0 - smoothstep(
+      HBAO_FULL_DISTANCE,
+      HBAO_MAX_DISTANCE,
+      viewDepth
+    );
     float ao = 1.0 - clamp(
       (occlusion / 6.0) * hbaoIntensity * distanceFade,
       0.0,
