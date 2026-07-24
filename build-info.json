@@ -1,12 +1,22 @@
 {
   "sourceCommit": "1bae00d",
   "pagesBase": "/vibe-game-playtest/",
-  "canonicalMap": {
-    "savedAt": "2026-07-22T22:38:00.092Z",
-    "enemies": 28,
-    "interactables": 6,
-    "glassCubes": 7,
-    "grass": 51,
-    "staticBodies": 91
+  "canonicalMaps": {
+    "level0": {
+      "savedAt": "2026-07-23T22:36:21.323Z",
+      "enemies": 0,
+      "interactables": 0,
+      "glassCubes": 0,
+      "grass": 0,
+      "staticBodies": 0
+    },
+    "level1": {
+      "savedAt": "2026-07-24T05:50:19.405Z",
+      "enemies": 28,
+      "interactables": 6,
+      "glassCubes": 7,
+      "grass": 51,
+      "staticBodies": 91
+    }
   }
 }
