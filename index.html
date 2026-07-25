@@ -42,8 +42,8 @@
         });
       });
     </script>
-    <script type="module" crossorigin src="/vibe-game-playtest/assets/index-C0JOnR7P.js"></script>
-    <link rel="stylesheet" crossorigin href="/vibe-game-playtest/assets/index-Bi7caiXm.css">
+    <script type="module" crossorigin src="/vibe-game-playtest/assets/index-BubxnX0V.js"></script>
+    <link rel="stylesheet" crossorigin href="/vibe-game-playtest/assets/index-DewxuWl8.css">
   </head>
   <body class="launch-screen-active">
     <section id="launch-screen" class="launch-screen" aria-label="Запуск игры" aria-busy="true">
@@ -73,6 +73,15 @@
           >
             <span id="launch-progress-fill" class="launch-progress-fill"></span>
           </div>
+          <p
+            id="launch-warmup-status"
+            class="launch-warmup-status"
+            role="status"
+            aria-live="polite"
+            hidden
+          >
+            Компиляция шейдеров, подождите...
+          </p>
         </div>
       </div>
 
@@ -101,6 +110,12 @@
         <button id="mobile-fire-button" class="mobile-fire-button" type="button" aria-label="Стрелять"></button>
         <button id="mobile-reload-button" class="mobile-reload-button" type="button" aria-label="Перезарядить"></button>
         <button id="mobile-heal-button" class="mobile-heal-button" type="button" aria-label="Лечиться"></button>
+        <button
+          id="mobile-tutorial-action-button"
+          class="mobile-tutorial-action-button"
+          type="button"
+          hidden
+        ></button>
       </section>
 
       <section class="hud hud-top" aria-label="Статус рейда">
@@ -123,7 +138,7 @@
             <span class="chip-label game-counter-label"><span class="chip-label-text">Патроны</span><span class="game-counter-icon ammo-icon" aria-hidden="true"></span><span class="game-counter-extra" aria-hidden="true"></span></span>
             <strong id="ammo-value" class="game-counter-value">21/20</strong>
           </div>
-          <div class="status-chip game-counter-chip threat-status-chip">
+          <div id="threat-chip" class="status-chip game-counter-chip threat-status-chip">
             <span class="chip-label game-counter-label">
               <span class="chip-label-text">Бармалеи</span>
               <svg class="game-counter-icon threat-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -140,7 +155,7 @@
           </div>
         </div>
         <div class="objective-cluster">
-          <div class="status-chip game-counter-chip objective-cargo-chip">
+          <div id="cargo-chip" class="status-chip game-counter-chip objective-cargo-chip">
             <span class="chip-label game-counter-label">
               <span class="chip-label-text">Том ям</span>
               <svg class="game-counter-icon soup-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -169,6 +184,11 @@
         <strong id="interaction-prompt-title">Заглушить связь</strong>
         <span id="interaction-prompt-copy">E</span>
       </section>
+
+      <section id="tutorial-overlay" class="tutorial-overlay" aria-live="polite" hidden>
+        <p id="tutorial-message" class="tutorial-message"></p>
+      </section>
+      <div id="tutorial-fade" class="tutorial-fade" aria-hidden="true"></div>
 
       <section id="orientation-panel" class="orientation-panel" aria-live="polite" hidden>
         <div class="orientation-content">
@@ -229,10 +249,12 @@
         </div>
       </section>
 
-      <section id="ready-panel" class="ready-panel" aria-label="Готовность">
+      <section id="ready-panel" class="ready-panel" aria-label="Стартовое меню уровня">
         <div class="ready-actions">
-          <button id="ready-button" type="button">Савадикап!</button>
-          <button id="ready-tutorial-button" class="ready-controls-button" type="button">Пройти обучение</button>
+          <button id="ready-button" class="ready-primary-button" type="button">Савадикап!</button>
+          <button id="ready-tutorial-button" class="ready-route-button" type="button">Пройти обучение</button>
+          <button id="ready-main-game-button" class="ready-route-button" type="button" hidden>К основной игре</button>
+          <button id="ready-settings-button" class="ready-controls-button" type="button" hidden>Настройки</button>
           <button id="ready-fullscreen-button" class="ready-controls-button" type="button">Во весь экран</button>
           <button id="ready-controls-button" class="desktop-controls-button ready-controls-button" type="button">Посмотреть управление</button>
         </div>
@@ -300,6 +322,8 @@
           <h1 id="result-title">Вы не потеряли лицо</h1>
           <p id="result-copy">Хотите ещё разок?</p>
           <button id="result-restart-button" type="button">Познать сабай снова</button>
+          <button id="result-tutorial-restart-button" class="result-secondary-button" type="button" hidden>Пройти обучение заново</button>
+          <button id="result-tutorial-final-fight-button" class="result-secondary-button" type="button" hidden>Повторить финальный бой</button>
         </div>
       </section>
     </main>
