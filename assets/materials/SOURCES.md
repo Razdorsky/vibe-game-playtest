@@ -23,8 +23,9 @@ Runtime policy:
   the weathered H marking integrated into that single top-surface texture.
 
 Runtime sets include Grass001, Concrete028, Planks039, ThatchedRoof002B,
-Bark012, Leaf001, Fabric042, Rock026, Metal056B, Leather026, Metal010,
-GreenhouseWood, GreenhouseSeat, and GreenhousePoster.
+Bark012, Leaf001, Fabric042, SandbagBurlap, Rock026, Metal056B, Leather026,
+Metal010, HelicopterMi17OlivePaint, GreenhouseWood, GreenhouseSeat, and
+GreenhousePoster.
 Leaf001 is cropped identically across albedo, normal, and roughness, then
 UV-fitted across the procedural palm-frond mesh. Its photographed veins and
 surface response follow the blade without sampling the source image's black
